@@ -1,0 +1,6 @@
+h5py
+matplotlib
+numpy
+openpmd_api
+scipy>=1.0.0
+

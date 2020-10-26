@@ -105,7 +105,7 @@ def convertToOPMD(input_file):
         # open file for writing
         opmd_fname = input_file.replace(".h5", ".opmd.h5")
 
-        series = opmd.Series(opmd_fname, opmd.Access_Type.create)
+        series = opmd.Series(opmd_fname, opmd.Access.create)
 
         # Add metadata
         series.set_author("SIMEX")

@@ -72,7 +72,7 @@ def genesis_dfl_from_openpmd_wavefront(h5_meshes, genesis4_filename=None):
     return dfl_x, dfl_y
 
 
-def write_dfl_to_genesis4_field(filename, dfl, *, gridpoints, slicecount, gridsize, refposition, slicespacing, wavelength):
+def write_dfl_to_genesis4_field(filename, dfl, *, gridpoints, gridsize, refposition, wavelength, slicecount, slicespacing):
     """
     Write dfl array to an open H5 handle in genesis4 format.
     
@@ -82,20 +82,20 @@ def write_dfl_to_genesis4_field(filename, dfl, *, gridpoints, slicecount, gridsi
         3d complex dfl grid with shape (nx, ny, nz)
     param: Genesis parameter dict. This routine extracts:
         gridpoints (ncar in v2)
-        slicecount (nslice in v2)
         gridsize (dgrid in v2)
-        refposition
-        slicespacing (zsep in v2)
+        refposition (ntail in v2)
         wavelength (xlamds in v2)
+        slicecount (nslice in v2)
+        slicespacing (zsep in v2)
     to write the appropriate metadata.
     
     """
     
     h5 = h5py.File(filename, 'w')
     
-    vars = [gridpoints, slicecount, gridsize, refposition, slicespacing, wavelength]
-    names = ["gridpoints", "slicecount", "gridsize", "refposition", "slicespacing", "wavelength"]
-    types = ['i4', 'i4', 'f8', 'f8', 'f8', 'f8']
+    vars = [gridpoints, gridsize, refposition, wavelength, slicecount, slicespacing]
+    names = ["gridpoints", "gridsize", "refposition", "wavelength", "slicecount", "slicespacing"]
+    types = ['i4', 'f8', 'f8', 'f8', 'i4', 'f8']
     
     for var, name, type in zip(vars, names, types):
         
@@ -107,11 +107,8 @@ def write_dfl_to_genesis4_field(filename, dfl, *, gridpoints, slicecount, gridsi
     for i in range(0, slicecount):
         ind = i + 1
         g = h5.create_group('slice' + str(f'{ind:06}'))
-        g.create_dataset('field-real', (slicelength,), dtype='f8')
-        g.create_dataset('field-imag', (slicelength,), dtype='f8')
-    
-        g['field-real'][:] = np.real(dfl[:, i])
-        g['field-imag'][:] = np.imag(dfl[:, i])
+        g['field-real'] = np.real(dfl[:, i]).astype('f8')
+        g['field-imag'] = np.imag(dfl[:, i]).astype('f8')    
         
     h5.close()
     

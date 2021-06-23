@@ -1,30 +1,31 @@
-import numpy
+import numpy as np
 import h5py
 
 Z0 = np.pi*119.9169832 # V^2/W exactly
 
-def genesis_dfl_from_openpmd_wavefront(h5_meshes, genesis4_filename=None):
+def genesis4_dfl_from_openpmd_wavefront(h5_meshes, genesis4_filename=None):
+    
     """
-   Produces a genesis 2/4 dfl arrray and saves it to genesis 4 field file
-   Example:
-   genesis4_filename = 'genesis4_field'
-   h5 = File('wavefront.h5', 'r')
-   meshes = h5['data']['000000']['meshes']
-   dfl_x, dfl_y = genesis_dfl_from_openpmd_wavefront(meshes, genesis4_filename)
+    Produces a genesis 2/4 dfl arrray and saves it to genesis 4 field file
+    Example:
+    genesis4_filename = 'genesis4_field'
+    h5 = File('wavefront.h5', 'r')
+    meshes = h5['data']['000000']['meshes']
+    dfl_x, dfl_y = genesis_dfl_from_openpmd_wavefront(meshes, genesis4_filename)
    
-   Parameters
-   ----------
-   h5_meshes : h5 handle
+    Parameters
+    ----------
+    h5_meshes : h5 handle
                open h5 handle to openpmd-wavefront file
-   genesis4_filename: str
+    genesis4_filename: str
                genesis 4 field filename
    
-   Returns
-   -------
-   dfl_x, dfl_y : numpy.array
+    Returns
+    -------
+    dfl_x, dfl_y : numpy.array
                  3d complex dfl grid with shape (nx, ny, nz)
    
-   field values in Genesis4 format
+    field values in Genesis4 format
         
     """
         
@@ -73,6 +74,7 @@ def genesis_dfl_from_openpmd_wavefront(h5_meshes, genesis4_filename=None):
 
 
 def write_dfl_to_genesis4_field(filename, dfl, *, gridpoints, gridsize, refposition, wavelength, slicecount, slicespacing):
+    
     """
     Write dfl array to an open H5 handle in genesis4 format.
     
@@ -111,4 +113,3 @@ def write_dfl_to_genesis4_field(filename, dfl, *, gridpoints, gridsize, refposit
         g['field-imag'] = np.imag(dfl[:, i]).astype('f8')    
         
     h5.close()
-    

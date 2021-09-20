@@ -84,7 +84,7 @@ def write_dfl_to_genesis4_field(filename, dfl, *, gridpoints, gridsize, refposit
         3d complex dfl grid with shape (nx, ny, nz)
     param: Genesis parameter dict. This routine extracts:
         gridpoints (ncar in v2)
-        gridsize (dgrid in v2)
+        gridsize (dgrid*2 / (ncar-1) in v2)
         refposition (ntail in v2)
         wavelength (xlamds in v2)
         slicecount (nslice in v2)
